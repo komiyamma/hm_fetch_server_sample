@@ -1,0 +1,6 @@
+G:\repogitory\hm_fetch_server_sample\HmFetchTextServer\HmFetchTextServer\bin\Release\HmFetchTextServer.dll
+G:\repogitory\hm_fetch_server_sample\HmFetchTextServer\HmFetchTextServer\bin\Release\HmFetchTextServer.pdb
+G:\repogitory\hm_fetch_server_sample\HmFetchTextServer\HmFetchTextServer\obj\Release\HmFetchTextServer.csproj.AssemblyReference.cache
+G:\repogitory\hm_fetch_server_sample\HmFetchTextServer\HmFetchTextServer\obj\Release\HmFetchTextServer.csproj.CoreCompileInputs.cache
+G:\repogitory\hm_fetch_server_sample\HmFetchTextServer\HmFetchTextServer\obj\Release\HmFetchTextServer.dll
+G:\repogitory\hm_fetch_server_sample\HmFetchTextServer\HmFetchTextServer\obj\Release\HmFetchTextServer.pdb

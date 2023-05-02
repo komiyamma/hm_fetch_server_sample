@@ -1,0 +1,24 @@
+<html>
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+<script>
+function updateFetch(port) {
+	fetch("http://localhost:" + port)
+	  .then(response => response.text())
+	  .then(data => {
+	    let panel = document.getElementById("update_panel");
+	    panel.innerHTML = data.toString();
+	  })
+	  .catch(error => {
+	  });
+}
+
+</script>
+こんにちわ。
+<div id="update_panel">
+</div>
+<br>
+</body>
+</html>

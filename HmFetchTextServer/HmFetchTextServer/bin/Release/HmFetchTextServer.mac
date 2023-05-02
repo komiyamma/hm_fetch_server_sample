@@ -1,0 +1,38 @@
+﻿RELEASE_OLD_FETCH_SERVER_OBJECT:
+
+    // 「この秀丸プロセス」内でのオブジェクト番号を取り出す
+    $LAST_PHP_SERVER_COM = getstaticvariable("HmFetchServerLastObj", 2);
+
+    // 有効な値があるならば...
+    if ($LAST_PHP_SERVER_COM != "") {
+        #LAST_PHP_SERVER_COM = val($LAST_PHP_SERVER_COM); // 文字列の数字 ⇒ 数値へ
+
+        // 該当の値をToStringして本当に「HmPHPSimpleServer」のオブジェクトか確認する。
+        // .NET で制作しているものはすべてのオブジェクトがToStringを持つ、それは「名前空間.クラス名」なのでこのような判定が出来る。
+        $OBJ_CLASS_NAME = member(#LAST_PHP_SERVER_COM, "ToString");
+        if ($OBJ_CLASS_NAME == "HmFetchTextServer.HmFetchTextServer") {
+            releaseobject(#LAST_PHP_SERVER_COM); // HmFetchTextServer.HmFetchTextServer 内の「OnReleaseObject」も実行される。
+        }
+    }
+
+
+CREATE_FETCH_SERVER_OBJECT:
+
+    #FETCH_SERVER = createobject(currentmacrodirectory + @"\HmFetchTextServer.dll", "HmFetchTextServer.HmFetchTextServer");
+
+    setstaticvariable "HmFetchServerLastObj", str(#FETCH_SERVER), 2; // 
+
+    keepobject #FETCH_SERVER, 1;
+
+    setcomdetachmethod #FETCH_SERVER, "OnReleaseObject";
+
+    #PORT = member(#FETCH_SERVER, "Start", 7200, 7300);
+
+    if (#PORT == 0) {
+        // エラーメッセージは、COMのdllの方からアウトプット枠にすでに出てる。
+        endmacro;
+    }
+
+
+jsmode "WebView2";
+execjs currentmacrodirectory + @"\HmFetchTextServerAsync.js";

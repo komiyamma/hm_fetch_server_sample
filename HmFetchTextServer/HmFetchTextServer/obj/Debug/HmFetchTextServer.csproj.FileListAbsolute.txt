@@ -1,0 +1,6 @@
+G:\bbbb\HmFetchTextServer\HmFetchTextServer\bin\Debug\HmFetchTextServer.dll
+G:\bbbb\HmFetchTextServer\HmFetchTextServer\bin\Debug\HmFetchTextServer.pdb
+G:\bbbb\HmFetchTextServer\HmFetchTextServer\obj\Debug\HmFetchTextServer.csproj.CoreCompileInputs.cache
+G:\bbbb\HmFetchTextServer\HmFetchTextServer\obj\Debug\HmFetchTextServer.dll
+G:\bbbb\HmFetchTextServer\HmFetchTextServer\obj\Debug\HmFetchTextServer.pdb
+G:\bbbb\HmFetchTextServer\HmFetchTextServer\obj\Debug\HmFetchTextServer.csproj.AssemblyReference.cache
