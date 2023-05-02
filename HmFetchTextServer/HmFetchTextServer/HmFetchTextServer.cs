@@ -55,11 +55,20 @@ public class HmFetchTextServer
         return port;
     }
 
+    string text = "";
     private string GetTotalText()
     {
-        string text = Hm.Edit.TotalText ?? "";
+        try
+        {
+            lock (text)
+            {
+                text = Hm.Edit.TotalText ?? "";
+            }
+        }
+        catch (Exception e)
+        {
+        }
         return text;
-
     }
 
     private Task StartTask(CancellationToken cts)
@@ -82,34 +91,42 @@ public class HmFetchTextServer
 
             while (isRunning)
             {
-                if (cts.IsCancellationRequested)
+                try
                 {
-                    break;
+                    if (cts.IsCancellationRequested)
+                    {
+                        break;
+                    }
+
+
+                    // リクエスト取得
+                    HttpListenerContext context = listener.GetContext();
+                    context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+                    HttpListenerRequest request = context.Request;
+
+
+                    // レスポンス取得
+                    HttpListenerResponse response = context.Response;
+
+                    // HTMLを表示する
+                    if (request != null)
+                    {
+                        string hmtext = GetTotalText();
+                        byte[] text = Encoding.UTF8.GetBytes(hmtext);
+                        response.ContentType = "text/html; charset=utf-8";
+                        response.ContentEncoding = Encoding.UTF8;
+                        response.OutputStream.Write(text, 0, text.Length);
+                    }
+                    else
+                    {
+                        response.StatusCode = 404;
+                    }
+                    response.Close();
                 }
-
-                // リクエスト取得
-                HttpListenerContext context = listener.GetContext();
-                context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
-                HttpListenerRequest request = context.Request;
-
-
-                // レスポンス取得
-                HttpListenerResponse response = context.Response;
-
-                // HTMLを表示する
-                if (request != null)
+                catch (Exception e)
                 {
-                    string hmtext = GetTotalText();
-                    byte[] text = Encoding.UTF8.GetBytes(hmtext);
-                    response.ContentType = "text/html; charset=utf-8";
-                    response.ContentEncoding = Encoding.UTF8;
-                    response.OutputStream.Write(text, 0, text.Length);
+                    Hm.OutputPane.Output(e.Message + "\r\n");
                 }
-                else
-                {
-                    response.StatusCode = 404;
-                }
-                response.Close();
             }
 
         }
