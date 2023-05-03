@@ -5,14 +5,17 @@
 <body>
 <script>
 function updateFetch(port) {
-	fetch("http://localhost:" + port)
-	  .then(response => response.text())
-	  .then(data => {
-	    let panel = document.getElementById("update_panel");
-	    panel.innerHTML = data.toString();
-	  })
-	  .catch(error => {
-	  });
+    try {
+		fetch("http://localhost:" + port)
+		  .then(response => response.text())
+		  .then(data => {
+		    let panel = document.getElementById("update_panel");
+		    panel.innerHTML = data.toString();
+		  })
+		  .catch(error => {
+		  });
+    } catch(e) {
+    }
 }
 
 </script>

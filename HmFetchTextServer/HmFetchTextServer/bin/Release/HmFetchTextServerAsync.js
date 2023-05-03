@@ -14,15 +14,18 @@ browserpanecommand(
 debuginfo(2);
 let port_send = false;
 function tickMethod() {
-    // テキストが変更になっている時だけ
-    if (isTotalTextChange()) {
-        browserpanecommand(
-            {
-                target: "_each",
-                url: `javascript:updateFetch(${port})`,
-                show: 1
-            }
-        );
+    try {
+        // テキストが変更になっている時だけ
+        if (isTotalTextChange()) {
+            browserpanecommand(
+                {
+                    target: "_each",
+                    url: `javascript:updateFetch(${port})`,
+                    show: 1
+                }
+            );
+        }
+    } catch (e) {
     }
 }
 
@@ -30,20 +33,25 @@ function tickMethod() {
 let preUpdateCount = 0;
 let preTotalText = 0;
 function isTotalTextChange() {
-    // updateCountで判定することで、テキスト内容の更新頻度を下げる。
-    // getTotalTextを分割したりコネコネするのは、行数が多くなってくるとやや負荷になりやすいので
-    // テキスト更新してないなら、前回の結果を返す。
-    let updateCount = hidemaru.getUpdateCount();
-    // 前回から何も変化していないなら、前回の結果を返す。
-    if (preUpdateCount == updateCount) {
-        return false;
-    }
-    let totalText = hidemaru.getTotalText();
-    if (preTotalText == totalText) {
-        return false;
-    }
+    try {
+        // updateCountで判定することで、テキスト内容の更新頻度を下げる。
+        // getTotalTextを分割したりコネコネするのは、行数が多くなってくるとやや負荷になりやすいので
+        // テキスト更新してないなら、前回の結果を返す。
+        let updateCount = hidemaru.getUpdateCount();
+        // 前回から何も変化していないなら、前回の結果を返す。
+        if (preUpdateCount == updateCount) {
+            return false;
+        }
+        let totalText = hidemaru.getTotalText();
+        if (preTotalText == totalText) {
+            return false;
+        }
 
-    return true;
+        return true;
+    }
+    catch(e) {
+    }
+    return false;
 }
 
 
