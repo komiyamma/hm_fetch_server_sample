@@ -123,6 +123,17 @@ public class HmFetchTextServer
                     }
                     response.Close();
                 }
+                catch (System.Net.HttpListenerException e)
+                {
+                    if (e.ErrorCode == 995)
+                    {
+                        // キャンセルなので順当
+                    }
+                    else
+                    {
+                        Hm.OutputPane.Output(e.Message + "\r\n");
+                    }
+                }
                 catch (Exception e)
                 {
                     Hm.OutputPane.Output(e.Message + "\r\n");
