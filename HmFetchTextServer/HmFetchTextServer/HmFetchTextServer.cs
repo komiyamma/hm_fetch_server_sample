@@ -71,6 +71,10 @@ public class HmFetchTextServer
         return text;
     }
 
+    // この関数は、HTTPリスナーを作成し、リクエストを受け取るまで待機します。
+    // リクエストを受け取ると、HTMLを返します。
+    // この関数は、HmFetchTextServer.Start()から呼び出されます。
+
     private Task StartTask(CancellationToken cts)
     {
 
@@ -123,16 +127,24 @@ public class HmFetchTextServer
                     }
                     response.Close();
                 }
-                catch (System.Net.HttpListenerException e)
+                catch (HttpListenerException e)
                 {
                     if (e.ErrorCode == 995)
                     {
-                        // キャンセルなので順当
+                        // キャンセルされた場合は、例外が発生するので、無視する。
                     }
                     else
                     {
                         Hm.OutputPane.Output(e.Message + "\r\n");
                     }
+                }
+                catch (OperationCanceledException e)
+                {
+                    // キャンセルされた場合は、例外が発生するので、無視する。
+                }
+                catch (ObjectDisposedException e)
+                {
+                    // キャンセルされた場合は、例外が発生するので、無視する。
                 }
                 catch (Exception e)
                 {
@@ -167,6 +179,9 @@ public class HmFetchTextServer
     {
         Close();
     }
+
+    // この関数は、HTTPリスナーを停止します。
+    // この関数は、HmFetchTextServer.Close()から呼び出されます。
 
     private void CloseTask()
     {
