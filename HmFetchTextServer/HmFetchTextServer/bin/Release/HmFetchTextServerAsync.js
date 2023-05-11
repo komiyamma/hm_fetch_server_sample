@@ -12,6 +12,7 @@ browserpanecommand(
 );
 
 let port_send = false;
+let initport = false;
 function tickMethod() {
 
     try {
@@ -21,10 +22,20 @@ function tickMethod() {
             return;
         }
 
-	    // この操作対象中は、javascriptによる更新しない。何が起こるかわからん
-	    if (isNotDetectedOperation()) {
-	        return;
-	    }
+        // この操作対象中は、javascriptによる更新しない。何が起こるかわからん
+        if (isNotDetectedOperation()) {
+            return;
+        }
+
+        browserpanecommand(
+            {
+                target: "_each",
+                url: `javascript:initPort(${port})`,
+                show: 1
+            }
+        );
+        initport = true;
+
 
         // テキストが変更になっている時だけ
         if (isTotalTextChange()) {
@@ -155,5 +166,6 @@ function isTotalTextChange() {
 if (typeof (timerHandle) === "undefined") {
     var timerHandle = 0;
 }
+
 hidemaru.clearInterval(timerHandle);
 timerHandle = hidemaru.setInterval(tickMethod, 1000);

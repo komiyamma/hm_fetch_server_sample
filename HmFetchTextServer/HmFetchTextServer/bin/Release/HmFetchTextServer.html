@@ -5,6 +5,11 @@
 <body>
 <script>
 let global_port = 0;
+
+function initPort(port) {
+    global_port = port;
+}
+
 function updateFetch(port) {
     global_port = port;
     try {
@@ -25,18 +30,18 @@ function postToServer() {
     if (port != 0) {
 		// 送信するJSONデータ
 		var jsonData = {
-		  key1: 'value1',
-		  key2: 'value2',
+		  key1: 'value1あいうえお',
+		  key2: 'value2感じ',
 		};
 
 		// XMLHttpRequestオブジェクトを作成する
 		var xhr = new XMLHttpRequest();
 
 		// POSTメソッド、送信先URL、非同期通信であることを指定する
-		xhr.open('POST', "http://localhost:" + port);
+		xhr.open('POST', "http://localhost:" + port, true);
 
-		// Content-TypeとしてJSONを指定する
-		xhr.setRequestHeader('Content-Type', 'application/json');
+		// Content-TypeとしてTEXTを指定する
+		xhr.setRequestHeader('Content-Type', 'text/plain');
 
 		// JSONデータをJSON文字列に変換して送信する
 		xhr.send(JSON.stringify(jsonData));

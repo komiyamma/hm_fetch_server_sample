@@ -103,25 +103,18 @@ public class HmFetchTextServer
                     }
 
 
-                    Hm.OutputPane.Output("content。\r\n");
                     // リクエスト取得
                     HttpListenerContext context = listener.GetContext();
 
-                    Hm.OutputPane.Output("header。\r\n");
                     context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
 
-                    Hm.OutputPane.Output("request。\r\n");
                     HttpListenerRequest request = context.Request;
 
-                    Hm.OutputPane.Output(request.HttpMethod + "\r\n");
 
                     // リクエストのHTTPメソッドがPOSTである場合のみ、リクエストボディからデータを読み取る
-                    if (request.HttpMethod == "POST" || request.HttpMethod == "OPTIONS")
+                    if (request.HttpMethod == "POST")
                     {
-                        // 
-                        Hm.OutputPane.Output("POSTリクエストが送信されました。\r\n");
-
-                        using (StreamReader reader = new StreamReader(request.InputStream, request.ContentEncoding))
+                        using (StreamReader reader = new StreamReader(request.InputStream, Encoding.UTF8))
                         {
                             // リクエストボディからJSON文字列を読み取る
                             string jsonString = reader.ReadToEnd();
@@ -133,9 +126,6 @@ public class HmFetchTextServer
                             // YourObject obj = JsonConvert.DeserializeObject<YourObject>(jsonString);
                         }
 
-                        Hm.OutputPane.Output("else。\r\n");
-
-
                         // レスポンス取得
                         HttpListenerResponse response = context.Response;
                         response.StatusCode = 200;
@@ -144,14 +134,8 @@ public class HmFetchTextServer
                     }
                     else
                     {
-
-                        Hm.OutputPane.Output("else。\r\n");
-
-
                         // レスポンス取得
                         HttpListenerResponse response = context.Response;
-
-                        Hm.OutputPane.Output("レスポンス取得後。\r\n");
 
                         // HTMLを表示する
                         if (request != null)
@@ -166,8 +150,6 @@ public class HmFetchTextServer
                         {
                             response.StatusCode = 404;
                         }
-
-                        Hm.OutputPane.Output("閉じる前。\r\n");
 
                         response.Close();
                     }
