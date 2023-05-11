@@ -3,16 +3,11 @@
 let port = getVar("#PORT");
 let target_html_file = currentmacrodirectory() + "\\HmFetchTextServer.html";
 
-browserpanecommand(
-    {
-        target: "_each",
-        url: target_html_file,
-        show: 1
-    }
-);
+// sleep 相当。ECMAScript には sleep が無いので。
+function sleep_in_tick(ms) {
+    return new Promise(resolve => hidemaru.setTimeout(resolve, ms));
+}
 
-let port_send = false;
-let initport = false;
 function tickMethod() {
 
     try {
@@ -26,16 +21,6 @@ function tickMethod() {
         if (isNotDetectedOperation()) {
             return;
         }
-
-        browserpanecommand(
-            {
-                target: "_each",
-                url: `javascript:initPort(${port})`,
-                show: 1
-            }
-        );
-        initport = true;
-
 
         // テキストが変更になっている時だけ
         if (isTotalTextChange()) {
@@ -168,4 +153,40 @@ if (typeof (timerHandle) === "undefined") {
 }
 
 hidemaru.clearInterval(timerHandle);
+
+async function initBrowserPane() {
+
+    browserpanecommand(
+        {
+            target: "_each",
+            url: target_html_file,
+            show: 1
+        }
+    );
+
+    // コマンド実行したので、complete になるまで待つ
+    // 0.6秒くらいまつのが限界。それ以上待つと、次のTickが来かねない。
+    for (let i = 0; i < 3; i++) {
+        await sleep_in_tick(200);
+        let status = browserpanecommand({
+            target: "_each",
+            get: "readyState"
+        });
+        if (status == "complete") {
+            break;
+        }
+    }
+
+    browserpanecommand(
+        {
+            target: "_each",
+            url: `javascript:initPort(${port})`,
+            show: 1
+        }
+    );
+}
+
+
+initBrowserPane();
+
 timerHandle = hidemaru.setInterval(tickMethod, 1000);
