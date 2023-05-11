@@ -1,4 +1,6 @@
-﻿RELEASE_OLD_FETCH_SERVER_OBJECT:
+﻿hidemaruversion("9.22.14");
+
+RELEASE_OLD_FETCH_SERVER_OBJECT:
 
     // 「この秀丸プロセス」内でのオブジェクト番号を取り出す
     $LAST_FETCH_SERVER_COM = getstaticvariable("HmFetchServerLastObj", 2);

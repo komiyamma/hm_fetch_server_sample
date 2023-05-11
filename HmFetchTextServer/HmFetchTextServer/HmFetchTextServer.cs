@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using HmNetCOM;
-
+using System.IO;
 
 namespace HmFetchTextServer;
 
@@ -103,29 +103,74 @@ public class HmFetchTextServer
                     }
 
 
+                    Hm.OutputPane.Output("content。\r\n");
                     // リクエスト取得
                     HttpListenerContext context = listener.GetContext();
+
+                    Hm.OutputPane.Output("header。\r\n");
                     context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+
+                    Hm.OutputPane.Output("request。\r\n");
                     HttpListenerRequest request = context.Request;
 
+                    Hm.OutputPane.Output(request.HttpMethod + "\r\n");
 
-                    // レスポンス取得
-                    HttpListenerResponse response = context.Response;
-
-                    // HTMLを表示する
-                    if (request != null)
+                    // リクエストのHTTPメソッドがPOSTである場合のみ、リクエストボディからデータを読み取る
+                    if (request.HttpMethod == "POST" || request.HttpMethod == "OPTIONS")
                     {
-                        string hmtext = GetTotalText();
-                        byte[] text = Encoding.UTF8.GetBytes(hmtext);
-                        response.ContentType = "text/html; charset=utf-8";
-                        response.ContentEncoding = Encoding.UTF8;
-                        response.OutputStream.Write(text, 0, text.Length);
+                        // 
+                        Hm.OutputPane.Output("POSTリクエストが送信されました。\r\n");
+
+                        using (StreamReader reader = new StreamReader(request.InputStream, request.ContentEncoding))
+                        {
+                            // リクエストボディからJSON文字列を読み取る
+                            string jsonString = reader.ReadToEnd();
+
+                            // 受信したJSON文字列をコンソールに出力する
+                            Hm.OutputPane.Output($"JSON文字列：{jsonString}" + "\r\n");
+
+                            // JSON文字列からオブジェクトをデシリアライズする
+                            // YourObject obj = JsonConvert.DeserializeObject<YourObject>(jsonString);
+                        }
+
+                        Hm.OutputPane.Output("else。\r\n");
+
+
+                        // レスポンス取得
+                        HttpListenerResponse response = context.Response;
+                        response.StatusCode = 200;
+
+                        response.Close();
                     }
                     else
                     {
-                        response.StatusCode = 404;
+
+                        Hm.OutputPane.Output("else。\r\n");
+
+
+                        // レスポンス取得
+                        HttpListenerResponse response = context.Response;
+
+                        Hm.OutputPane.Output("レスポンス取得後。\r\n");
+
+                        // HTMLを表示する
+                        if (request != null)
+                        {
+                            string hmtext = GetTotalText();
+                            byte[] text = Encoding.UTF8.GetBytes(hmtext);
+                            response.ContentType = "text/html; charset=utf-8";
+                            response.ContentEncoding = Encoding.UTF8;
+                            response.OutputStream.Write(text, 0, text.Length);
+                        }
+                        else
+                        {
+                            response.StatusCode = 404;
+                        }
+
+                        Hm.OutputPane.Output("閉じる前。\r\n");
+
+                        response.Close();
                     }
-                    response.Close();
                 }
                 catch (HttpListenerException e)
                 {

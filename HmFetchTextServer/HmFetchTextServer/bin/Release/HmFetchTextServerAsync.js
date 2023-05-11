@@ -11,7 +11,6 @@ browserpanecommand(
     }
 );
 
-debuginfo(2);
 let port_send = false;
 function tickMethod() {
 
@@ -56,7 +55,7 @@ function isNotDetectedOperation() {
     ○ 0x00004000 中ボタンによるオートスクロール中
     ○ 0x00008000 キーやマウスの操作直後
     ○ 0x00010000 何かマウスのボタンを押している
-    ○ 0x00020000 マウスキャプチャ状態(ドラッグ状態)
+    × 0x00020000 マウスキャプチャ状態(ドラッグ状態)
     ○ 0x00040000 Hidemaru_CheckQueueStatus相当
     */
     let istatus = hidemaru.getInputStates();
@@ -144,6 +143,7 @@ function isTotalTextChange() {
             return false;
         }
 
+        preTotalText = totalText;
         return true;
     }
     catch(e) {
