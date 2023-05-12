@@ -4,6 +4,7 @@ let port = getVar("#PORT");
 let target_html_file = currentmacrodirectory() + "\\HmFetchTextServer.html";
 
 let target_browser = "_each";
+let target_browser_size = 300;
 
 // sleep 相当。ECMAScript には sleep が無いので。
 function sleep_in_tick(ms) {
@@ -30,7 +31,7 @@ function tickMethod() {
                 {
                     target: target_browser,
                     url: `javascript:updateFetch(${port})`,
-                    show: 1
+                    size: 300
                 }
             );
         }
@@ -163,6 +164,7 @@ async function initBrowserPane() {
             target: target_browser,
             url: target_html_file,
             show: 1,
+            size: 300
         }
     );
 
@@ -183,12 +185,12 @@ async function initBrowserPane() {
         {
             target: target_browser,
             url: `javascript:initPort(${port})`,
-            show: 1
+            size: 300
         }
     );
 }
 
-
 initBrowserPane();
+setfocus(1);
 
 timerHandle = hidemaru.setInterval(tickMethod, 1000);
