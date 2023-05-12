@@ -11,15 +11,16 @@ namespace HmFetchTextServer;
 
 public interface IHmFetchTextServer
 {
-    int Start();
+    int Start(int portBGN, int portEND);
     int Close();
 
     void OnReleaseObject(int reason);
 
 }
 
+[ClassInterface(ClassInterfaceType.None)]
 [Guid("1FF92CE3-87CD-4034-9FEE-9DC49F012AD1")]
-public class HmFetchTextServer
+public class HmFetchTextServer : IHmFetchTextServer
 {
     CancellationTokenSource cts;
     bool isRunning = false;
