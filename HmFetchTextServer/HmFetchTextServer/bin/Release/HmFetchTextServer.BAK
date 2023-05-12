@@ -30,8 +30,8 @@ function postToServer() {
     if (port != 0) {
 		// 送信するJSONデータ
 		var jsonData = {
-		  key1: 'value1',
-		  key2: 'value2',
+		  key1: 'value1あいうえお',
+		  key2: 'value2感じ',
 		};
 
 		// XMLHttpRequestオブジェクトを作成する
@@ -45,6 +45,7 @@ function postToServer() {
 
 		// JSONデータをJSON文字列に変換して送信する
 		xhr.send(JSON.stringify(jsonData));
+        // xhr.send(document.currentScript.textContent);
 
 	    let panel = document.getElementById("update_panel");
 	    panel.innerHTML = "送信ボタンを押した";
