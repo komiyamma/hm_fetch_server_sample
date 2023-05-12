@@ -3,6 +3,8 @@
 let port = getVar("#PORT");
 let target_html_file = currentmacrodirectory() + "\\HmFetchTextServer.html";
 
+let target_browser = "_each";
+
 // sleep 相当。ECMAScript には sleep が無いので。
 function sleep_in_tick(ms) {
     return new Promise(resolve => hidemaru.setTimeout(resolve, ms));
@@ -26,7 +28,7 @@ function tickMethod() {
         if (isTotalTextChange()) {
             browserpanecommand(
                 {
-                    target: "_each",
+                    target: target_browser,
                     url: `javascript:updateFetch(${port})`,
                     show: 1
                 }
@@ -158,9 +160,9 @@ async function initBrowserPane() {
 
     browserpanecommand(
         {
-            target: "_each",
+            target: target_browser,
             url: target_html_file,
-            show: 1
+            show: 1,
         }
     );
 
@@ -169,7 +171,7 @@ async function initBrowserPane() {
     for (let i = 0; i < 3; i++) {
         await sleep_in_tick(200);
         let status = browserpanecommand({
-            target: "_each",
+            target: target_browser,
             get: "readyState"
         });
         if (status == "complete") {
@@ -179,7 +181,7 @@ async function initBrowserPane() {
 
     browserpanecommand(
         {
-            target: "_each",
+            target: target_browser,
             url: `javascript:initPort(${port})`,
             show: 1
         }

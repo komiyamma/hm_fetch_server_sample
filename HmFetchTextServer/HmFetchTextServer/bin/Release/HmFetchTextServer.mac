@@ -22,7 +22,7 @@ CREATE_FETCH_SERVER_OBJECT:
 
     #FETCH_SERVER = createobject(currentmacrodirectory + @"\HmFetchTextServer.dll", "HmFetchTextServer.HmFetchTextServer");
 
-    setstaticvariable "HmFetchServerLastObj", str(#FETCH_SERVER), 2; // 
+    setstaticvariable "HmFetchServerLastObj", str(#FETCH_SERVER), 2; 
 
     keepobject #FETCH_SERVER, 1;
 
